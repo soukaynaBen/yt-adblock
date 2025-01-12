@@ -3,7 +3,7 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
     switch (reason) {
       case "install":
         console.info("EXTENSION INSTALLED");
-        chrome.tabs.query({}, (tabs) => {
+        chrome.tabs.query({active: true, currentWindow: true }, (tabs) => {
           tabs
             .filter((tab) => tab.url.startsWith("https://www.youtube.com/"))
             .forEach(({ id }) => {
@@ -56,6 +56,7 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
   };
   
   chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    console.log("tab updated", new Date(Date.now()) )
     if (
       changeInfo.status === "complete" &&
       String(tab.url).includes("https://www.youtube.com/watch")
